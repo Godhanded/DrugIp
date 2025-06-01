@@ -4,7 +4,7 @@ const axios = require('axios');
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const { ethers } = require('ethers');
 
-const DRUGIP_UPKEEP_ADDRESS = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
+const DRUGIP_UPKEEP_ADDRESS = "0x850B8D455b5228E86F8160746aa2d904d937d941";
 const AVALANCHE_RPC_URL = "http://127.0.0.1:8545";
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
 const UPKEEP_ABI = require("./DrugIPUpkeepABI.json");

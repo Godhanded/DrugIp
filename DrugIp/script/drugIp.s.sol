@@ -18,8 +18,8 @@ contract DrugIPScript is Script {
 
         drugIPToken = new DrugIPToken(msg.sender);
         drugIPUpkeep = new DrugIPUpkeep(address(drugIPToken));
-        console.log("DrugIPUpkeep address: ", address(drugIPUpkeep));
         console.log("DrugToken address: ", address(drugIPToken));
+        console.log("DrugIPUpkeep address: ", address(drugIPUpkeep));
 
         vm.stopBroadcast();
     }
