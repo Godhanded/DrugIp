@@ -1,0 +1,50 @@
+# Gitpod configuration for Foundry development environment
+
+tasks:
+  - name: Install Foundry
+    init: |
+      # Install foundryup
+      curl -L https://foundry.paradigm.xyz | bash
+      
+      # Source the environment to make foundryup available
+      source ~/.bashrc
+      
+      # Install foundry toolchain (forge, cast, anvil, chisel)
+      ~/.foundry/bin/foundryup
+      
+      # Add foundry to PATH for current session
+      export PATH="$HOME/.foundry/bin:$PATH"
+      
+      # Verify installation
+      echo "Foundry installation complete!"
+      forge --version
+      cast --version
+      anvil --version
+    command: |
+      # Make sure foundry is in PATH
+      export PATH="$HOME/.foundry/bin:$PATH"
+      
+      echo "🔨 Foundry is ready!"
+      echo "Available commands: forge, cast, anvil, chisel"
+      echo "Run 'forge init' to create a new project or start developing!"
+
+# Expose commonly used ports
+ports:
+  - port: 8545
+    onOpen: ignore
+    description: Anvil local blockchain
+  - port: 3000
+    onOpen: ignore
+    description: Frontend development server
+
+# Install VS Code extensions for Solidity development
+vscode:
+  extensions:
+    - nomicfoundation.hardhat-solidity
+    - JuanBlanco.solidity
+
+# Set up environment variables
+github:
+  prebuilds:
+    master: true
+    branches: true
