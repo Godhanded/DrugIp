@@ -5,3 +5,5 @@ artifacts
 out
 node_modules
 lib
+venv
+.elizadb

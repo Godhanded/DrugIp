@@ -5,6 +5,9 @@ tasks:
     init: |
       # Install foundryup
       curl -L https://foundry.paradigm.xyz | bash
+
+      # Install bun
+      curl -fsSL https://bun.sh/install | bash
       
       # Source the environment to make foundryup available
       source ~/.bashrc
@@ -43,8 +46,4 @@ vscode:
     - nomicfoundation.hardhat-solidity
     - JuanBlanco.solidity
 
-# Set up environment variables
-github:
-  prebuilds:
-    master: true
-    branches: true
+

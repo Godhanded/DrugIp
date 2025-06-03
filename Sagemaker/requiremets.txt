@@ -1,0 +1,4 @@
+joblib==1.5.1
+numpy==2.2.6
+pillow==11.2.1
+rdkit==2025.3.2
