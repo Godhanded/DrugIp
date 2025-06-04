@@ -6,9 +6,10 @@ var character = {
   name: "DrugDiscoveryAgent",
   plugins: [
     "@elizaos/plugin-sql",
+    ...process.env.OPENROUTER_API_KEY ? ["@elizaos/plugin-openrouter"] : [],
     ...process.env.ANTHROPIC_API_KEY ? ["@elizaos/plugin-anthropic"] : [],
     ...process.env.OPENAI_API_KEY ? ["@elizaos/plugin-openai"] : [],
-    ...!process.env.OPENAI_API_KEY ? ["@elizaos/plugin-local-ai"] : [],
+    // ...(!process.env.OPENAI_API_KEY ? ['@elizaos/plugin-local-ai'] : []),
     ...process.env.DISCORD_API_TOKEN ? ["@elizaos/plugin-discord"] : [],
     ...process.env.TWITTER_USERNAME ? ["@elizaos/plugin-twitter"] : [],
     ...process.env.TELEGRAM_BOT_TOKEN ? ["@elizaos/plugin-telegram"] : [],
@@ -106,4 +107,4 @@ export {
   projectAgent,
   src_default
 };
-//# sourceMappingURL=chunk-3EMJCRP4.js.map
+//# sourceMappingURL=chunk-3I2OBBFT.js.map

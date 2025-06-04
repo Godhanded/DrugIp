@@ -9,6 +9,9 @@ tasks:
       # Install bun
       curl -fsSL https://bun.sh/install | bash
       
+      # install Eliza
+      npm install -g @elizaos/cli
+
       # Source the environment to make foundryup available
       source ~/.bashrc
       

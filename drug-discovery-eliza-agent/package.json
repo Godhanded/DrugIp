@@ -29,8 +29,10 @@
   "dependencies": {
     "@elizaos/cli": "latest",
     "@elizaos/core": "latest",
+    "@elizaos/plugin-anthropic": "1.0.0",
     "@elizaos/plugin-bootstrap": "1.0.4",
     "@elizaos/plugin-local-ai": "1.0.0",
+    "@elizaos/plugin-openrouter": "^1.0.0",
     "@elizaos/plugin-sql": "latest",
     "zod": "3.24.2"
   },
@@ -41,7 +43,7 @@
     "@vitest/coverage-v8": "2.1.5"
   },
   "scripts": {
-    "start": "elizaos start",
+    "start": "tsup && elizaos start",
     "dev": "elizaos dev",
     "build": "tsup",
     "lint": "prettier --write ./src",
