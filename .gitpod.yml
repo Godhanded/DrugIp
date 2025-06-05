@@ -3,6 +3,7 @@
 tasks:
   - name: Install Foundry
     init: |
+      #curl -L https://foundry.paradigm.xyz | bash && curl -fsSL https://bun.sh/install | bash && npm install -g @elizaos/cli && source ~/.bashrc && foundryup
       # Install foundryup
       curl -L https://foundry.paradigm.xyz | bash
 

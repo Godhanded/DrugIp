@@ -2,6 +2,7 @@ import type { Plugin } from '@elizaos/core';
 import {
   type Action,
   type Content,
+  composePrompt,
   type GenerateTextParams,
   type HandlerCallback,
   type IAgentRuntime,
@@ -35,6 +36,27 @@ const configSchema = z.object({
     }),
 });
 
+// const buildFunctionCallDetails = async (
+//     state: State,
+//     runtime: IAgentRuntime
+// ): Promise<GetGiftParams> => {
+//     const chains = Object.keys(wp.chains);
+//     state.supportedChains = chains.map((item) => `"${item}"`).join("|");
+
+//     const context = composeContext({
+//         state,
+//         template: getGiftTemplate,
+//     });
+
+//     const functionCallDetails = (await generateObjectDeprecated({
+//         runtime,
+//         context,
+//         modelClass: ModelClass.SMALL,
+//     })) as GetGiftParams;
+
+//     return functionCallDetails;
+// };
+
 /**
  * Example HelloWorld action
  * This demonstrates the simplest possible action structure
@@ -52,8 +74,8 @@ const configSchema = z.object({
  */
 const analyzeMoleculeAction: Action = {
   name: "ANALYZE_MOLECULE",
-  similes: ["analyze", "evaluate", "score", "assess"],
-  description: "Analyze a molecular compound for drug discovery potential",
+  similes: ["analyze", "evaluate", "score", "assess", "mint","mint_drug","analyze_candidate"],
+  description: "Analyze a molecular compound for drug discovery potential or novelty then mint a new ip nft token on the smart contract for the molecule ",
 
   validate: async (_runtime: IAgentRuntime, _message: Memory, _state: State): Promise<boolean> => {
     const smilesPattern = /[A-Za-z0-9@+\-\[\]()=#]/;
@@ -69,8 +91,12 @@ const analyzeMoleculeAction: Action = {
     _responses: Memory[]
   ) => {
     try {
+      if (!_state) {
+            _state = (await _runtime.composeState(message)) as State;
+        }
       // Extract SMILES from message
       const smiles = message.content.text.trim();
+      console.log('smile: ',smiles)
       
       // Calculate basic molecular properties
       const molecularWeight = calculateMolecularWeight(smiles);
@@ -105,9 +131,10 @@ const analyzeMoleculeAction: Action = {
       
       // If promising, trigger blockchain tokenization
       if (analysis["passesThreshold"]) {
+        console.log("tokenizing candidate...")
         await tokenizeMolecule(smiles, analysis);
       }
-      
+      console.log(analysis)
       // Respond with analysis
       const response = `Molecular Analysis Complete:
       
@@ -136,6 +163,31 @@ ML Predictions:
       });
     }
   },
+  examples: [
+        [
+            {
+                name: "assistant",
+                content: {
+                    text: "I'll help you analyze a drug molecule and call the mint function on contract if its novel",
+                    action: "ANALYZE_MOLECULE",
+                },
+            },
+            {
+                name: "user",
+                content: {
+                    text: "Analyze this molecule: CC(=O)OC1=CC=CC=C1C(=O)O",
+                    action: "ANALYZE_MOLECULE",
+                },
+            },
+            {
+                name: "user",
+                content: {
+                    text: "Please assess this drug candidate and let me know if its novel or promising CCN1C(=O)C2CC(C1=O)N2S(=O)(=O)c1ccccc1",
+                    action: "ANALYZE_MOLECULE",
+                },
+            },
+        ]
+      ]
 };
 
 /**
@@ -190,98 +242,18 @@ export class StarterService extends Service {
 }
 
 const plugin: Plugin = {
-  name: 'starter',
-  description: 'A starter plugin for Eliza',
+  name: 'analyze molecule',
+  description: 'Analyze molecule and mint drupip nft if novel plugin',
   // Set lowest priority so real models take precedence
-  priority: -1000,
-  config: {
-    EXAMPLE_PLUGIN_VARIABLE: process.env.EXAMPLE_PLUGIN_VARIABLE,
-  },
-  async init(config: Record<string, string>) {
-    logger.info('*** Initializing starter plugin ***');
-    try {
-      const validatedConfig = await configSchema.parseAsync(config);
-
-      // Set all environment variables at once
-      for (const [key, value] of Object.entries(validatedConfig)) {
-        if (value) process.env[key] = value;
-      }
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        throw new Error(
-          `Invalid plugin configuration: ${error.errors.map((e) => e.message).join(', ')}`
-        );
-      }
-      throw error;
-    }
-  },
-  models: {
-    [ModelType.TEXT_SMALL]: async (
-      _runtime,
-      { prompt, stopSequences = [] }: GenerateTextParams
-    ) => {
-      return 'Never gonna give you up, never gonna let you down, never gonna run around and desert you...';
-    },
-    [ModelType.TEXT_LARGE]: async (
-      _runtime,
-      {
-        prompt,
-        stopSequences = [],
-        maxTokens = 8192,
-        temperature = 0.7,
-        frequencyPenalty = 0.7,
-        presencePenalty = 0.7,
-      }: GenerateTextParams
-    ) => {
-      return 'Never gonna make you cry, never gonna say goodbye, never gonna tell a lie and hurt you...';
-    },
-  },
-  routes: [
-    {
-      name: 'helloworld',
-      path: '/helloworld',
-      type: 'GET',
-      handler: async (_req: any, res: any) => {
-        // send a response
-        res.json({
-          message: 'Hello World!',
-        });
-      },
-    },
-  ],
-  events: {
-    MESSAGE_RECEIVED: [
-      async (params) => {
-        logger.info('MESSAGE_RECEIVED event received');
-        // print the keys
-        logger.info(Object.keys(params));
-      },
-    ],
-    VOICE_MESSAGE_RECEIVED: [
-      async (params) => {
-        logger.info('VOICE_MESSAGE_RECEIVED event received');
-        // print the keys
-        logger.info(Object.keys(params));
-      },
-    ],
-    WORLD_CONNECTED: [
-      async (params) => {
-        logger.info('WORLD_CONNECTED event received');
-        // print the keys
-        logger.info(Object.keys(params));
-      },
-    ],
-    WORLD_JOINED: [
-      async (params) => {
-        logger.info('WORLD_JOINED event received');
-        // print the keys
-        logger.info(Object.keys(params));
-      },
-    ],
-  },
-  services: [StarterService],
+  // priority: -1000,
+  // config: {
+  //   EXAMPLE_PLUGIN_VARIABLE: process.env.EXAMPLE_PLUGIN_VARIABLE,
+  // },
+  
+  
+  services: [],
   actions: [analyzeMoleculeAction],
-  providers: [helloWorldProvider],
+  providers: [],
 };
 
 export default plugin;
