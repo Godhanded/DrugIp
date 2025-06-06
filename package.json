@@ -1,7 +1,7 @@
 {
   "name": "drugip",
   "version": "1.0.0",
-  "main": "eliza-agent.js",
+  "main": "drug-discovery-eliza-agent/dist/src/index.js",
   "dependencies": {
     "@aws-sdk/client-s3": "^3.823.0",
     "@aws-sdk/client-sagemaker": "^3.823.0",
