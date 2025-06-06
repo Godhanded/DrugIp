@@ -55,8 +55,6 @@ export const character: Character = {
           text: "Analyzing aspirin (acetylsalicylic acid). Molecular weight: 180.16 g/mol. This compound passes basic drug-likeness filters with good oral bioavailability potential. LogP: 1.19 indicates favorable lipophilicity. However, as this is already a known drug, it would not qualify for novel IP tokenization.",
         },
       },
-    ],
-    [
       {
         user: "user",
         content: {
