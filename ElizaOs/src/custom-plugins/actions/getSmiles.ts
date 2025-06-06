@@ -242,7 +242,7 @@ export const getSmilesAction: Action = {
         },
       },
       {
-        user: "assistant",
+        user: "DrugDiscoveryAgent",
         content: {
           text: "🧬 DRUG DISCOVERY EVALUATION REPORT\n\nMOLECULE: CCO\n\n📊 EVALUATION SCORES:\n• Activity Score: 0.245\n• Novelty Score: 0.123\n• Toxicity Score: 0.789\n• Drug-likeness: 0.167\n• Synthesizability: 0.934\n\n🎯 DECISION: REJECT\n📈 CONFIDENCE: 23%\n\n💡 REASONING: Molecule fails to meet multiple criteria: low activity (0.25), low novelty (0.12), high toxicity risk (0.79). Not suitable for current development pipeline thus i will not mint a token for it.",
         },
