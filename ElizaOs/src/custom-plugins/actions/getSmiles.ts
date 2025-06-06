@@ -212,7 +212,7 @@ export const getSmilesAction: Action = {
   examples: [
     [
       {
-        user: "assistant",
+        user: "DrugDiscoveryAgent",
         content: {
           text: "I'll help you analyze a drug molecule and call the mint function on contract if its novel",
           action: "ANALYZE_MOLECULE",
@@ -232,20 +232,8 @@ export const getSmilesAction: Action = {
           action: "ANALYZE_MOLECULE",
         },
       },
-      {
-        user: "user",
-        content: {
-          text: "What do you think of this compound: CCO for treating headaches?",
-          action: "ANALYZE_MOLECULE",
-        },
-      },
-      {
-        user: "DrugDiscoveryAgent",
-        content: {
-          text: "🧬 DRUG DISCOVERY EVALUATION REPORT\n\nMOLECULE: CCO\n\n📊 EVALUATION SCORES:\n• Activity Score: 0.245\n• Novelty Score: 0.123\n• Toxicity Score: 0.789\n• Drug-likeness: 0.167\n• Synthesizability: 0.934\n\n🎯 DECISION: REJECT\n📈 CONFIDENCE: 23%\n\n💡 REASONING: Molecule fails to meet multiple criteria: low activity (0.25), low novelty (0.12), high toxicity risk (0.79). Not suitable for current development pipeline thus i will not mint a token for it.",
-        },
-      },
-    ]
+      
+    ],
   ],
   similes: [
     "analyze",
