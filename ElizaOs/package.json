@@ -11,6 +11,7 @@
     "stop:service:all": "pm2 stop all"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.826.0",
     "@chainlink/functions-toolkit": "^0.3.2",
     "@elizaos/adapter-postgres": "0.1.7",
     "@elizaos/adapter-sqlite": "0.1.7",
@@ -25,6 +26,7 @@
     "@tavily/core": "0.0.2",
     "agent-twitter-client": "0.0.18",
     "amqplib": "0.10.5",
+    "axios": "^1.9.0",
     "better-sqlite3": "11.5.0",
     "dotenv": "^16.4.7",
     "ethers": "v5",
@@ -70,6 +72,7 @@
     ]
   },
   "devDependencies": {
+    "@types/axios": "^0.14.4",
     "ts-node": "10.9.2",
     "tsup": "8.3.5",
     "typescript": "5.6.3"

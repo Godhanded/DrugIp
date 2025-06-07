@@ -14,4 +14,3 @@ with torch.no_grad():
     decoded = [vocab.decode(seq.tolist()) for seq in output]
     for i, seq in enumerate(decoded): print(f"Sample {i+1}: {seq}")
 
-
