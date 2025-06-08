@@ -9,6 +9,7 @@ import sascorer  # make sure sascorer.py is available
 # Device setup (use GPU if available)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
+
 class GraphFeaturizer:
     def featurize(self, smiles_list, y_values=None):
         graph_list = []
@@ -56,40 +57,48 @@ def predict_smiles_toxicity(smiles, model_path="toxicity_model.pth"):
     labels = ["SR-p53", "SR-ARE", "NR-AhR", "NR-AR"]
     return {label: probs[0, i].item() for i, label in enumerate(labels)}
 
-def lipinski_rule(mol):
+def compute_physchem_properties(mol):
     mw = Descriptors.MolWt(mol)
     logp = Descriptors.MolLogP(mol)
-    hdonors = NumHDonors(mol)
-    hacceptors = NumHAcceptors(mol)
-    return (mw <= 500) and (logp <= 5) and (hdonors <= 5) and (hacceptors <= 10)
+    h_donors = NumHDonors(mol)
+    h_acceptors = NumHAcceptors(mol)
+    return mw, logp, h_donors, h_acceptors
 
-def check_eligibility(smiles, model_path="best_model.pth"):
+def lipinski_rule(mw, logp, h_donors, h_acceptors):
+    return (mw <= 500) and (logp <= 5) and (h_donors <= 5) and (h_acceptors <= 10)
+
+def check_eligibility(smiles, model_path="toxicity_model.pth"):
     mol = Chem.MolFromSmiles(smiles)
     if mol is None:
         raise ValueError("Invalid SMILES string")
 
+    # Compute properties
+    mw, logp, h_donors, h_acceptors = compute_physchem_properties(mol)
+    lipinski_pass = lipinski_rule(mw, logp, h_donors, h_acceptors)
     qed = QED.qed(mol)
-    lipinski_pass = lipinski_rule(mol)
     sa_score = sascorer.calculateScore(mol)
 
     tox_pred = predict_smiles_toxicity(smiles, model_path=model_path)
     if tox_pred is None:
         raise ValueError("Toxicity prediction failed")
-
     tox_score = max(tox_pred.values())
 
     eligible = (qed >= 0.4) and lipinski_pass and (sa_score <= 5) and (tox_score < 0.5)
 
     return {
         "qed": qed,
-        "lipinski_pass": lipinski_pass,
         "sa_score": sa_score,
         "tox_pred": tox_pred,
         "tox_score": tox_score,
-        "eligible": eligible
+        "eligible": eligible,
+        "mw": mw,
+        "logp": logp,
+        "num_h_donors": h_donors,
+        "num_h_acceptors": h_acceptors,
+        "lipinski_pass": lipinski_pass
     }
 #usage
 if __name__ == "__main__":
     test_smiles = "CC1=NC=C(N1CCO)N(=O)=O"  # example: acetaminophen
-    results = check_eligibility(test_smiles, model_path="toxicity_model.pth")
+    results = check_eligibility(test_smiles, model_path="Sagemaker/toxicity_model.pth")
     print(results)
