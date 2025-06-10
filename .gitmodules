@@ -4,3 +4,6 @@
 [submodule "DrugIp/lib/openzeppelin-contracts"]
 	path = DrugIp/lib/openzeppelin-contracts
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "DrugIp/lib/chainlink"]
+	path = DrugIp/lib/chainlink
+	url = https://github.com/smartcontractkit/chainlink

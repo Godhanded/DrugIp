@@ -5,6 +5,16 @@ libs = ["lib"]
 
 remappings = [
     "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+    "@chainlink/contracts/=lib/chainlink/contracts",
+    "forge-std/=lib/forge-std/src"
 ]
+
+[rpc_endpoints]
+sepolia = "${SEPOLIA_URL}"
+fuji = "${AVALANCHE_RPC_URL}"
+
+[etherscan]
+fuji = { key= "${AVALANCHESCAN_API_KEY}"}
+sepolia = { key= "${ETHERSCAN_API_KEY}"}
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
