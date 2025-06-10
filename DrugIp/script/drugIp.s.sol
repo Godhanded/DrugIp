@@ -12,7 +12,6 @@ contract DrugIPScript is Script {
     function setUp() public {}
 
     function run() public {
-        console.log(msg.sender);
         vm.startBroadcast();
         console.log(msg.sender);
 
