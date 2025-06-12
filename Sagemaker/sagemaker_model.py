@@ -24,7 +24,7 @@ def predict_fn(input_data, model):
         mol = Chem.MolFromSmiles(smiles)
         if mol is None:
             return {"error": "Invalid SMILES"}
-        
+        print(mol)
         # Calculate molecular descriptors
         mw = Descriptors.MolWt(mol)
         logp = Crippen.MolLogP(mol)
