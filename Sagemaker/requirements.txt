@@ -1,6 +1,7 @@
 joblib==1.5.1
 numpy==2.2.6
 pillow==11.2.1
-rdkit==2025.3.2
+rdkit==2022.09.5
 flask
-torch
+torch == 2.3.0
+torch-geometric==2.6.1

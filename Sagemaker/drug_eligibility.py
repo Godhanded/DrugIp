@@ -67,7 +67,7 @@ def compute_physchem_properties(mol):
 def lipinski_rule(mw, logp, h_donors, h_acceptors):
     return (mw <= 500) and (logp <= 5) and (h_donors <= 5) and (h_acceptors <= 10)
 
-def check_eligibility(smiles, model_path="toxicity_model.pth"):
+def check_eligibility(smiles, model_path="Sagemaker/toxicity_model.pth"):
     mol = Chem.MolFromSmiles(smiles)
     if mol is None:
         raise ValueError("Invalid SMILES string")
@@ -99,6 +99,6 @@ def check_eligibility(smiles, model_path="toxicity_model.pth"):
     }
 #usage
 if __name__ == "__main__":
-    test_smiles = "CC1=NC=C(N1CCO)N(=O)=O"  # example: acetaminophen
+    test_smiles = "O=C(Nc1nc2ccc(Cl)cc2s1)c1ccc(F)cc1"  # example: acetaminophen
     results = check_eligibility(test_smiles, model_path="Sagemaker/toxicity_model.pth")
     print(results)
