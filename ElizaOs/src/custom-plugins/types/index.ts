@@ -12,6 +12,7 @@ export interface GetSmilesParams {
   smiles: string;
   shouldMint: boolean;
   compound_name: string | null;
+  description:string,
   context: string | null;
   target_disease: string | null;
 }

@@ -79,23 +79,23 @@ export function assessDrugLikeness(mw, logP) {
   };
 }
 
-export async function callAWSModel(smiles): Promise<any> {
+export async function callScoringModel(smiles:string): Promise<any> {
   try {
-    // Call your AWS SageMaker endpoint
+    // Call model endpoint
     const response = await axios.post(
-      process.env.AWS_SAGEMAKER_ENDPOINT!,
+      process.env.MODEL_ENDPOINT! +"/predict",
       {
-        instances: [{ smiles: smiles }],
+       smiles: smiles ,
       },
       {
         headers: {
-          Authorization: `Bearer ${process.env.AWS_ACCESS_TOKEN}`,
+          // Authorization: `Bearer ${process.env.AWS_ACCESS_TOKEN}`,
           "Content-Type": "application/json",
         },
       }
     );
 
-    return response.data.predictions[0];
+    return response.data;
   } catch (error) {
     console.error("AWS model call failed: fallback to local check");
 
@@ -103,8 +103,99 @@ export async function callAWSModel(smiles): Promise<any> {
   }
 }
 
+export function generateMetaData(name, smiles, analysis, description) {
+  return {
+  "name": smiles,
+  "description": description,
+  "image": `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/smiles/${encodeURIComponent(
+        smiles
+      )}/PNG`,
+  "external_url": "https://your-pharma-platform.com/compounds/AD-001",
+  "attributes": [
+    {
+      "trait_type": "Compound Class",
+      "value": "Small Molecule Inhibitor"
+    },
+    {
+      "trait_type": "Target Disease",
+      "value": "Alzheimer's Disease"
+    },
+    {
+      "trait_type": "ML Confidence Score",
+      "value": 87,
+      "max_value": 100,
+      "display_type": "boost_percentage"
+    },
+    {
+      "trait_type": "Binding Affinity (pIC50)",
+      "value": 8.2,
+      "max_value": 12,
+      "display_type": "number"
+    },
+    {
+      "trait_type": "Drug-likeness Score",
+      "value": 78,
+      "max_value": 100,
+      "display_type": "boost_percentage"
+    },
+    {
+      "trait_type": "Toxicity Risk",
+      "value": "Low"
+    },
+    {
+      "trait_type": "Development Stage",
+      "value": "Hit-to-Lead"
+    },
+    {
+      "trait_type": "Market Potential",
+      "value": "High"
+    },
+    {
+      "trait_type": "Patent Status",
+      "value": "Patent Pending"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Rare"
+    }
+  ],
+  "molecular_data": {
+    "molecular_weight": analysis.mw,
+    "logp": analysis.logp,
+    "hbd": analysis.num_h_donors,
+    "hba": analysis.num_h_acceptors,
+    "tpsa": analysis.tpsa,
+    "sa_score": analysis.sa_score,
+    "qed": analysis.qed,
+    "tox_score": analysis.tox_score,
+    "tox_pred": analysis.tox_pred,
+    "lipinski_passes": analysis.lipinski_passes,
+    "smiles": smiles
+  },
+  "ml_analysis": {
+    "model": "Custom chem v2.1",
+    "tox_pred": analysis.tox_pred,
+  },
+  "financial": {
+    "estimated_dev_cost": "$300M - $700M",
+    "peak_sales_estimate": "$850M - $1.5B",
+    "success_probability": 0.19
+  },
+  "tokenomics": {
+    "total_supply": 1000000,
+    "revenue_share_pct": 25,
+    "governance_rights": true
+  },
+  "provenance": {
+    "discovery_date":analysis.timestamp,
+    "blockchain": "Avalanche C-Chain",
+    "token_standard": "ERC-1155",
+  }
+}
+}
+
 // Blockchain integration function
-export async function tokenizeMolecule(smiles, analysis) {
+export async function tokenizeMolecule(smiles, metadata) {
   try {
     // Upload metadata to S3
     const s3 = new S3Client({
@@ -114,21 +205,6 @@ export async function tokenizeMolecule(smiles, analysis) {
         secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
       },
     });
-
-    const metadata = {
-      ...analysis,
-      description: `Drug IP for molecule ${smiles}`,
-      image: `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/smiles/${encodeURIComponent(
-        smiles
-      )}/PNG`,
-      attributes: [
-        { trait_type: "Molecular Weight", value: analysis.molecularWeight },
-        { trait_type: "LogP", value: analysis.logP },
-        { trait_type: "Overall Score", value: analysis.overallScore },
-        { trait_type: "Bioactivity", value: analysis.mlScores.bioactivity },
-        { trait_type: "Toxicity Risk", value: analysis.mlScores.toxicity },
-      ],
-    };
 
     const key = `drugip/${Date.now()}-${smiles.replace(
       /[^A-Za-z0-9]/g,

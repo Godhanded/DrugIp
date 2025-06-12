@@ -4,7 +4,7 @@ from drug_eligibility import check_eligibility
 
 app= Flask(__name__)
 
-@app.route(rule="/predict", methods=["GET"])
+@app.route(rule="/predict", methods=["GET","POST"])
 def analyze_smile():
     smiles:str | None = request.get_json().get("smiles",None)
     if not smiles:

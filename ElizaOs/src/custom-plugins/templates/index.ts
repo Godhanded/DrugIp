@@ -50,6 +50,7 @@ Before providing the final JSON output, show your reasoning process inside <anal
    - Look for compound names (aspirin, caffeine, etc.)
    - Identify any mentioned therapeutic targets or diseases
    - Note any specific evaluation requests
+   - give a summary of what you found or think about the molecule inside the description property of the json
 
 4. If SMILES is missing or invalid, prepare an appropriate error message.
 
@@ -57,7 +58,7 @@ Before providing the final JSON output, show your reasoning process inside <anal
 
 6. Prepare the JSON structure based on your analysis.
 
-After your analysis, provide the final output in a JSON markdown block. The 'smiles' field is required, others are optional. The JSON should have this structure:
+After your analysis, provide the final output in a JSON markdown block. The 'smiles' and 'description' fields are required, others are optional. The JSON should have this structure:
 
 \`\`\`json
 {
@@ -65,6 +66,7 @@ After your analysis, provide the final output in a JSON markdown block. The 'smi
     "shouldMint": boolean,
     "compound_name": string | null,
     "context": string | null,
+    "description": string,
     "target_disease": string | null
 }
 \`\`\`
@@ -79,5 +81,11 @@ Remember:
 - Look for common SMILES patterns and chemical notation
 - Consider that users might provide additional context about the molecule's purpose
 - Be flexible with input formats but strict with SMILES validation
+- If you find multiple SMILES in the message, choose the most relevant one based on context
+- If the user provides a compound name, include it in the output
+- If the user mentions a specific disease or target, include that in the context
+- the description field of the output json is for you to leave a comment about it.
 
 Now, process the user's request and provide your response.`;
+
+

@@ -23,7 +23,8 @@ import {
   calculateLogP,
   calculateMolecularWeight,
   tokenizeMolecule,
-  callAWSModel,
+  callScoringModel,
+  generateMetaData,
 } from "./analyzeMolecule.ts";
 
 /**
@@ -43,7 +44,7 @@ export class GetSmilesAction {
    * @throws Will throw an error if contract address, slot ID, version, or subscription ID is not set.
    */
   async getSmile(
-    params: GetSmilesParams
+    params: GetSmilesParams,pretext:string | null
   ): Promise<{ text: string; content?: any | null }> {
     console.log(params.smiles);
 
@@ -52,49 +53,36 @@ export class GetSmilesAction {
       const smiles = params.smiles;
 
       // Calculate basic molecular properties
-      const molecularWeight = calculateMolecularWeight(smiles);
-      const logP = calculateLogP(smiles);
-      const drugLikeness = assessDrugLikeness(molecularWeight, logP);
+      // const molecularWeight = calculateMolecularWeight(smiles);
+      // const logP = calculateLogP(smiles);
+      // const drugLikeness = assessDrugLikeness(molecularWeight, logP);
 
       // Call AWS ML model for advanced scoring
-      const mlScores = await callAWSModel(smiles);
+      const mlScores = await callScoringModel(smiles);
 
       const analysis = {
-        smiles,
-        molecularWeight,
-        logP,
-        drugLikeness,
-        mlScores: mlScores || {
-          bioactivity: 0.5,
-          toxicity: 0.3,
-          novelty: 0.7,
-        },
+        ...mlScores,
         timestamp: new Date().toISOString(),
       };
 
       // Determine if molecule passes threshold
-      const overallScore =
-        drugLikeness.score * 0.3 +
-        (mlScores?.bioactivity || 0.5) * 0.4 +
-        (1 - (mlScores?.toxicity || 0.3)) * 0.3;
+      const metadata= generateMetaData(smiles,smiles,analysis,pretext)
 
-      analysis["overallScore"] = overallScore;
-      analysis["passesThreshold"] = overallScore > 0.7;
+      analysis["passesThreshold"] = mlScores["eligible"];
 
       // If promising, trigger blockchain tokenization
       if (analysis["passesThreshold"] && params.shouldMint) {
         console.log("tokenizing candidate...");
-        await tokenizeMolecule(smiles, analysis);
+        await tokenizeMolecule(smiles, metadata);
       }
-      console.log(analysis);
       // Respond with analysis
       const response = `Molecular Analysis Complete:
       
 🧬 Compound: ${smiles}
-⚖️ Molecular Weight: ${molecularWeight.toFixed(2)} g/mol
-🌊 LogP: ${logP.toFixed(2)}
-📊 Drug-likeness Score: ${(drugLikeness.score * 100).toFixed(1)}%
-🎯 Overall Score: ${(overallScore * 100).toFixed(1)}%
+⚖️ Molecular Weight: ${analysis["mw"]} g/mol
+🌊 LogP: ${analysis["logp"]}
+📊 sa Score: ${(analysis["sa_score"])}
+🎯 qed Score: ${(analysis["qed"] )}
 
 ${
   analysis["passesThreshold"]
@@ -103,9 +91,9 @@ ${
 }
 
 ML Predictions:
-• Bioactivity: ${((mlScores?.bioactivity || 0.5) * 100).toFixed(1)}%
-• Toxicity Risk: ${((mlScores?.toxicity || 0.3) * 100).toFixed(1)}%
-• Novelty: ${((mlScores?.novelty || 0.7) * 100).toFixed(1)}%`;
+• Toxicity Prediction: ${((analysis["tox_pred"]) )}%
+• Toxicity Risk: ${((analysis["tox_score"]) )}
+• Qed: ${analysis["qed"]}`;
 
       return {
         text: response,
@@ -174,14 +162,14 @@ export const getSmilesAction: Action = {
     const action = new GetSmilesAction(walletProvider);
 
     // Compose functionCall context
-    const giftParams: GetSmilesParams = await buildFunctionCallDetails(
+    const smilesParams: GetSmilesParams = await buildFunctionCallDetails(
       state,
       runtime,
       walletProvider
     );
-
+    console.log("contx",smilesParams.context)
     try {
-      const callFunctionResp = await action.getSmile(giftParams);
+      const callFunctionResp = await action.getSmile(smilesParams,smilesParams.description);
       if (callback) {
         callback({
           text: callFunctionResp.text,
