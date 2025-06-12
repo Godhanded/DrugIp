@@ -137,7 +137,7 @@ export async function tokenizeMolecule(smiles, analysis) {
     await s3.send(
       new PutObjectCommand({
         Bucket: process.env.AWS_BUCKET_NAME,
-        Key: key,
+        Key: key,ACL: "public-read",
         Body: JSON.stringify(metadata),
         ContentType: "application/json",
       })
