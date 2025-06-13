@@ -213,19 +213,19 @@ export async function tokenizeMolecule(smiles, metadata) {
     await s3.send(
       new PutObjectCommand({
         Bucket: process.env.AWS_BUCKET_NAME,
-        Key: key,ACL: "public-read",
+        Key: key,
         Body: JSON.stringify(metadata),
         ContentType: "application/json",
       })
     );
 
-    const metadataUrl = `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${key}`;
-
+    const metadataUrl = `https://${process.env.AWS_BUCKET_NAME}.s3.us-east-1.amazonaws.com/${key}`;
+    console.log(metadataUrl)
     // Queue for blockchain minting
     const provider = new ethers.providers.JsonRpcProvider(
       process.env.AVALANCHE_RPC_URL!
     );
-    const wallet = new ethers.Wallet(process.env.PRIVATE_KEY!, provider);
+    const wallet = new ethers.Wallet(process.env.EVM_PRIVATE_KEY!, provider);
 
     const upkeepABI = [
       "function queueMolecule(string memory smiles, string memory metadataURI) public",
@@ -239,7 +239,9 @@ export async function tokenizeMolecule(smiles, metadata) {
 
     const tx = await upkeep.queueMolecule(smiles, metadataUrl);
     console.log(`Molecule queued for tokenization: ${tx.hash}`);
+    return tx
   } catch (error) {
     console.error("Tokenization failed:", error);
+    return null;
   }
 }

@@ -3,9 +3,9 @@ from data_structs import Vocabulary
 import torch
 
 device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
-vocab = Vocabulary("Sagemaker/Voc.txt")
+vocab = Vocabulary("Voc.txt")
 model = TransformerModel(vocab)
-model.load_state_dict(torch.load("Sagemaker/generative-model.ckpt", map_location=device))
+model.load_state_dict(torch.load("generative-model.ckpt", map_location=device))
 model.eval()
 
 

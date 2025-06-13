@@ -7,3 +7,4 @@ node_modules
 lib
 venv
 .elizadb
+__pycache__

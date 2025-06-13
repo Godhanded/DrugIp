@@ -69,11 +69,11 @@ export class GetSmilesAction {
       const metadata= generateMetaData(smiles,smiles,analysis,pretext)
 
       analysis["passesThreshold"] = mlScores["eligible"];
-
+      let hash=null;
       // If promising, trigger blockchain tokenization
       if (analysis["passesThreshold"] && params.shouldMint) {
         console.log("tokenizing candidate...");
-        await tokenizeMolecule(smiles, metadata);
+      hash=  await tokenizeMolecule(smiles, metadata);
       }
       // Respond with analysis
       const response = `Molecular Analysis Complete:
@@ -83,6 +83,7 @@ export class GetSmilesAction {
 🌊 LogP: ${analysis["logp"]}
 📊 sa Score: ${(analysis["sa_score"])}
 🎯 qed Score: ${(analysis["qed"] )}
+ ${hash? "📊 TxHash: " + hash: "Not Minted!"}
 
 ${
   analysis["passesThreshold"]
@@ -167,7 +168,6 @@ export const getSmilesAction: Action = {
       runtime,
       walletProvider
     );
-    console.log("contx",smilesParams.context)
     try {
       const callFunctionResp = await action.getSmile(smilesParams,smilesParams.description);
       if (callback) {
