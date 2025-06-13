@@ -91,7 +91,7 @@ ${
 }
 
 ML Predictions:
-• Toxicity Prediction: ${((analysis["tox_pred"]) )}%
+• Toxicity Prediction: ${((JSON.stringify(analysis["tox_pred"])) )}%
 • Toxicity Risk: ${((analysis["tox_score"]) )}
 • Qed: ${analysis["qed"]}`;
 
