@@ -64,7 +64,7 @@ COPY --from=builder /app/tsconfig.json ./
 EXPOSE $PORT
 
 # Set Node.js memory limit and run the application
-CMD ["sh", "-c", "NODE_OPTIONS='--max-old-space-size=768' pnpm start --non-interactive"]
+CMD ["NODE_OPTIONS='--max-old-space-size=768' pnpm start --non-interactive"]
 
 
 
