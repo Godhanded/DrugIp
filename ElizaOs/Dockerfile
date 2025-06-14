@@ -24,8 +24,8 @@ RUN pnpm install --frozen-lockfile
 
 # Copy the rest of the application code
 COPY ./src ./src
-COPY ./characters ./characters
-COPY ./.env ./
+# COPY ./characters ./characters
+# COPY ./.env ./
 
 # Build the project with memory optimization and disable source maps for production
 RUN NODE_OPTIONS="--max-old-space-size=1536" pnpm build
@@ -51,8 +51,8 @@ RUN pnpm install --prod --frozen-lockfile
 
 # Copy built application and necessary files
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/characters ./characters
-COPY --from=builder /app/.env ./
+# COPY --from=builder /app/characters ./characters
+# COPY --from=builder /app/.env ./
 COPY --from=builder /app/tsconfig.json ./
 
 # Create a non-root user for security
