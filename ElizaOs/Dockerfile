@@ -47,7 +47,7 @@ COPY package.json ./
 COPY pnpm-lock.yaml ./
 
 # Install only production dependencies
-RUN pnpm install --prod --frozen-lockfile
+RUN pnpm install 
 
 # Copy built application and necessary files
 COPY --from=builder /app/dist ./dist
@@ -56,9 +56,9 @@ COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/tsconfig.json ./
 
 # Create a non-root user for security
-RUN addgroup --system --gid 1001 eliza && \
-    adduser --system --uid 1001 eliza
-USER eliza
+# RUN addgroup --system --gid 1001 eliza && \
+#     adduser --system --uid 1001 eliza
+# USER eliza
 
 # Render uses the PORT environment variable
 EXPOSE $PORT
