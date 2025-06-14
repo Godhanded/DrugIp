@@ -1,51 +1,55 @@
-# Use Alpine for smaller footprint
-FROM node:20-alpine AS builder
+# Use a specific Node.js version for better reproducibility
+FROM node:23.3.0-slim AS builder
 
-# Install pnpm and build dependencies
+# Install pnpm globally and install necessary build tools
+RUN npm install -g pnpm@9.15.1 
+RUN apt-get update && \
+    apt-get install -y git python3 make g++ && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Set Python 3 as the default python
+RUN ln -s /usr/bin/python3 /usr/bin/python
+
+# Set the working directory
+WORKDIR /app
+
+# Copy package.json and other configuration files
+COPY package.json ./
+COPY pnpm-lock.yaml ./
+COPY tsconfig.json ./
+
+# Copy the rest of the application code
+COPY ./src ./src
+# COPY ./characters ./characters
+COPY ./.env ./
+
+# Install dependencies and build the project
+RUN pnpm i
+RUN pnpm build 
+# Create a new stage for the final image
+FROM node:23.3.0-slim
+
+# Install runtime dependencies if needed
 RUN npm install -g pnpm@9.15.1
-RUN apk add --no-cache git python3 make g++
+RUN apt-get update && \
+    apt-get install -y git python3 && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# Copy dependency files first
-COPY package.json pnpm-lock.yaml ./
+# Copy built artifacts and production dependencies from the builder stage
+COPY --from=builder /app/package.json /app/
+COPY --from=builder /app/node_modules /app/node_modules
+COPY --from=builder /app/src /app/src
+# COPY --from=builder /app/characters /app/characters
+COPY --from=builder /app/.env /app/
+COPY --from=builder /app/dist /app/dist
+COPY --from=builder /app/tsconfig.json /app/
+COPY --from=builder /app/pnpm-lock.yaml /app/
 
-# Install with minimal memory usage
-RUN NODE_OPTIONS="--max-old-space-size=512" \
-    pnpm config set network-concurrency 1 && \
-    pnpm config set child-concurrency 1 && \
-    pnpm install --frozen-lockfile --no-optional --prefer-offline
-
-# Copy source and build
-COPY . .
-RUN NODE_OPTIONS="--max-old-space-size=768" pnpm build
-
-# Production stage
-FROM node:20-alpine
-
-RUN npm install -g pnpm@9.15.1
-RUN apk add --no-cache git
-
-WORKDIR /app
-
-# Copy package files
-COPY package.json pnpm-lock.yaml ./
-
-# Install production dependencies only
-RUN NODE_OPTIONS="--max-old-space-size=256" \
-    pnpm config set network-concurrency 1 && \
-    pnpm install --prod --frozen-lockfile --no-optional
-
-# Copy built app
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/characters ./characters
-COPY --from=builder /app/.env ./
-
-# Create non-root user
-RUN addgroup -g 1001 -S eliza && \
-    adduser -S eliza -u 1001
-USER eliza
-
-EXPOSE $PORT
-
-CMD ["sh", "-c", "NODE_OPTIONS='--max-old-space-size=512' pnpm start --non-interactive"]
+EXPOSE 10000
+# Set the command to run the application
+CMD pnpm start --non-interactive
+# CMD ["node", "dist/index.js"]

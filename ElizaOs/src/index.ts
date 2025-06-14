@@ -99,7 +99,7 @@ async function startAgent(character: Character, directClient: DirectClient) {
 
     // report to console
     elizaLogger.debug(`Started ${character.name} as ${runtime.agentId}`);
-
+    console.log("agent start complete next")
     return runtime;
   } catch (error) {
     elizaLogger.error(
@@ -131,8 +131,10 @@ const checkPortAvailable = (port: number): Promise<boolean> => {
 };
 
 const startAgents = async () => {
+  console.log("startag")
   const directClient = new DirectClient();
-  let serverPort = parseInt( "10000");
+  console.log("drcli")
+  let serverPort = parseInt( process.env.PORT!);
   const args = parseArguments();
 
   let charactersArg = args.characters || args.character;
@@ -142,13 +144,13 @@ const startAgents = async () => {
   if (charactersArg) {
     characters = await loadCharacters(charactersArg);
   }
-  console.log("characters", characters);
+  console.log("characters", characters.length);
   try {
     for (const character of characters) {
       await startAgent(character, directClient as DirectClient);
     }
   } catch (error) {
-    elizaLogger.error("Error starting agents:", error);
+    elizaLogger.error("Error starting agentsy:", error);
   }
 
   while (!(await checkPortAvailable(serverPort))) {
@@ -161,22 +163,23 @@ const startAgents = async () => {
     // wrap it so we don't have to inject directClient later
     return startAgent(character, directClient);
   };
-
+  console.log(serverPort)
   directClient.start(serverPort);
 
-  if (serverPort !== parseInt(settings.SERVER_PORT || "10000")) {
+  if (serverPort !== parseInt(settings.PORT || "10000")) {
     elizaLogger.log(`Server started on alternate port ${serverPort}`);
   }
 
-  const isDaemonProcess = process.env.DAEMON_PROCESS === "true";
-  if (!isDaemonProcess) {
-    elizaLogger.log("Chat started. Type 'exit' to quit.");
-    const chat = startChat(characters);
-    chat();
-  }
+  // const isDaemonProcess = process.env.DAEMON_PROCESS === "true";
+  // if (!isDaemonProcess) {
+  //   elizaLogger.log("Chat started. Type 'exit' to quit.");
+  //   const chat = startChat(characters);
+  //   chat();
+  // }
 };
 
 startAgents().catch((error) => {
   elizaLogger.error("Unhandled error in startAgents:", error);
+  console.log(error)
   process.exit(1);
 });
