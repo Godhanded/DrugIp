@@ -133,14 +133,12 @@ const checkPortAvailable = (port: number): Promise<boolean> => {
 const startAgents = async () => {
   console.log("startag")
   const directClient = new DirectClient();
-  console.log("drcli")
   let serverPort = parseInt( process.env.PORT!);
   const args = parseArguments();
 
   let charactersArg = args.characters || args.character;
   let characters = [character];
 
-  console.log("charactersArg", charactersArg);
   if (charactersArg) {
     characters = await loadCharacters(charactersArg);
   }
