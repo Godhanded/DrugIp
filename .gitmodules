@@ -7,3 +7,8 @@
 [submodule "DrugIp/lib/chainlink"]
 	path = DrugIp/lib/chainlink
 	url = https://github.com/smartcontractkit/chainlink
+[submodule "DrugIp/lib/ccip"]
+	path = DrugIp/lib/ccip
+	url = https://github.com/smartcontractkit/ccip
+[submodule "lib/ccip"]
+	branch = ccip-develop
