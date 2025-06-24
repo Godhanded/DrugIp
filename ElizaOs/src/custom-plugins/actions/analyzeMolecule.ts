@@ -239,7 +239,7 @@ export async function tokenizeMolecule(smiles, metadata) {
 
     const tx = await upkeep.queueMolecule(smiles, metadataUrl);
     console.log(`Molecule queued for tokenization: ${tx.hash}`);
-    return tx
+    return tx.hash
   } catch (error) {
     console.error("Tokenization failed:", error);
     return null;
