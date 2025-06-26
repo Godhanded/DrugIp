@@ -6,7 +6,7 @@ import {DrugIPToken} from "../src/DrugIp.sol";
 import {Client} from "@chainlink/contracts-ccip/src/v0.8/ccip/libraries/Client.sol";
 
 contract EnableFujiSep is Script {
-    DrugIPToken public drugIPToken = DrugIPToken(0xB029Da98c516D518ee50021E95D3683f0755D94f);
+    DrugIPToken public drugIPToken = DrugIPToken(0x18759204f9B7198C4990e1d28BD5fbeCdCF521B2);
 
     function setUp() public {}
 
@@ -14,7 +14,7 @@ contract EnableFujiSep is Script {
         vm.createSelectFork("fuji");
         vm.startBroadcast();
 
-        // drugIPToken.enableChain(16015286601757825753,0x850B8D455b5228E86F8160746aa2d904d937d941,encode(200_000));
+        // drugIPToken.enableChain(16015286601757825753,0x6fc8d8526aDF846b21DEbA79994129858B8B7EB3,encode(200_000));
         drugIPToken.ccSafeTransferFrom{value: 0.15 ether}(
             msg.sender, msg.sender, 0, 1, encode(200_000), 16015286601757825753, DrugIPToken.PayFeesIn.Native
         );

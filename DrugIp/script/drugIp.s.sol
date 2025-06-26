@@ -46,7 +46,7 @@ contract DrugIPAvanlanche is Script {
             16015286601757825753
         );
 
-        console.log("DrugTokenSepoilaEth address: ", address(drugIPToken));
+        console.log("DrugTokenSepoilaEth address: ", address(drugIPTokenEth));
 
         drugIPTokenEth.enableChain(14767482510784806043, address(drugIPToken), encode(200_000));
         vm.stopBroadcast();
