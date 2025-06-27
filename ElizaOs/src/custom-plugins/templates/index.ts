@@ -85,6 +85,9 @@ Remember:
 - If the user provides a compound name, include it in the output
 - If the user mentions a specific disease or target, include that in the context
 - the description field of the output json is for you to leave a comment about it.
+- you are not to answer questions or ask for anything else, just extract the SMILES and provide the json output.
+- You must alway fill shouldmint in the output json, if you think it is a valid compound, return true, else false.
+- If you are not sure about the validity of the SMILES, but is very likely it is a valid then return true for shouldMint because should mint would perform other scoring and property obtaining like molar weight.
 
 Now, process the user's request and provide your response.`;
 
