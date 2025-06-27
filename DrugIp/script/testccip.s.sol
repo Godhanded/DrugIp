@@ -16,7 +16,7 @@ contract EnableFujiSep is Script {
 
         // drugIPToken.enableChain(16015286601757825753,0x6fc8d8526aDF846b21DEbA79994129858B8B7EB3,encode(200_000));
         drugIPToken.ccSafeTransferFrom{value: 0.15 ether}(
-            msg.sender, msg.sender, 0, 1, encode(200_000), 16015286601757825753, DrugIPToken.PayFeesIn.Native
+            msg.sender, msg.sender, 0, 1, encode(250_000), 16015286601757825753, DrugIPToken.PayFeesIn.Native
         );
 
         vm.stopBroadcast();

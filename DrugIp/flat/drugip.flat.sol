@@ -4793,7 +4793,7 @@ contract DrugIPToken is ERC1155, ERC1155Burnable, ERC1155Supply, ERC1155URIStora
         returns (uint256)
     {
         bytes32 molHash = keccak256(abi.encodePacked(moleculeHash));
-        require(!s_moleculeHasBeenMinted[molHash], "Molecule already tokenized");
+        // require(!s_moleculeHasBeenMinted[molHash], "Molecule already tokenized");
 
         _mint(s_recieverAddress, s_tokenCounter, 1, "");
         _setURI(s_tokenCounter, metadataURI);
