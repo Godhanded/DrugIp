@@ -1,8 +1,22 @@
 from flask import Flask, jsonify,request
 from drug_eligibility import check_eligibility
+from test import gen_smile
 
 
 app= Flask(__name__)
+
+@app.route(rule="/predict/<string:smile>")
+def predict_smile(smile):
+    smiles = smile
+    if not smiles:
+        return jsonify({"error": "No SMILES provided"}), 400
+    try:
+        analysis = check_eligibility(smiles)
+        return jsonify(analysis),200
+    except ValueError as ve:
+        return jsonify({"error": str(ve)}), 400
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route(rule="/predict", methods=["GET","POST"])
 def analyze_smile():
@@ -16,6 +30,10 @@ def analyze_smile():
         return jsonify({"error": str(ve)}), 400
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+@app.route(rule="/gensmile/<int:amount>")
+def generate_smile(amount=1):
+    return jsonify({"smiles": gen_smile(amount)}), 200
     
 @app.route(rule="/health")
 def health_check():
