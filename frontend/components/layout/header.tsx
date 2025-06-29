@@ -11,8 +11,8 @@ export default function Header() {
 
   const navLinks = [
     {
-      title: "how it works",
-      link: "#how-it-works"
+      title: "try it out",
+      link: "/action"
     },
     {
       title: "about",
