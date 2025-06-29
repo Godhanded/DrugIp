@@ -79,13 +79,13 @@ export function assessDrugLikeness(mw, logP) {
   };
 }
 
-export async function callScoringModel(smiles:string): Promise<any> {
+export async function callScoringModel(smiles: string): Promise<any> {
   try {
     // Call model endpoint
     const response = await axios.post(
-      process.env.MODEL_ENDPOINT! +"/predict",
+      process.env.MODEL_ENDPOINT! + "/predict",
       {
-       smiles: smiles ,
+        smiles: smiles,
       },
       {
         headers: {
@@ -105,93 +105,116 @@ export async function callScoringModel(smiles:string): Promise<any> {
 
 export function generateMetaData(name, smiles, analysis, description) {
   return {
-  "name": smiles,
-  "description": description,
-  "image": `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/smiles/${encodeURIComponent(
-        smiles
-      )}/PNG`,
-  "external_url": "https://your-pharma-platform.com/compounds/AD-001",
-  "attributes": [
-    {
-      "trait_type": "Compound Class",
-      "value": "Small Molecule Inhibitor"
+    name: smiles,
+    description: description,
+    image: `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/smiles/${encodeURIComponent(
+      smiles
+    )}/PNG`,
+    external_url: `https://demol.vercel.app/`,
+    attributes: [
+      {
+        trait_type: "Molecular Weight",
+        value: analysis.mw,
+      },
+      {
+        trait_type: "LogP",
+        value: analysis.logp,
+      },
+      {
+        trait_type: "H-Bond Donors",
+        value: analysis.num_h_donors,
+      },
+      {
+        trait_type: "H-Bond Acceptors",
+        value: analysis.num_h_acceptors,
+      },
+      {
+        trait_type: "TPSA",
+        value: analysis.tpsa,
+      },
+      {
+        trait_type: "SA Score",
+        value: analysis.sa_score,
+        display_type: "number",
+      },
+      {
+        trait_type: "QED Score",
+        value: analysis.qed,
+        display_type: "number",
+      },
+      {
+        trait_type: "Toxicity Score",
+        value: analysis.tox_score,
+        display_type: "number",
+      },
+      {
+        trait_type: "Toxicity Prediction",
+        value: analysis.tox_pred,
+      },
+      {
+        trait_type: "Lipinski Rule Passes",
+        value: analysis.lipinski_passes,
+      },
+      {
+        trait_type: "SMILES",
+        value: smiles,
+      },
+      {
+        trait_type: "Drug-likeness Score",
+        value: 78,
+        max_value: 100,
+        display_type: "boost_percentage",
+      },
+      {
+        trait_type: "Development Stage",
+        value: "Hit-to-Lead",
+      },
+      {
+        trait_type: "Market Potential",
+        value: "High",
+      },
+      {
+        trait_type: "Patent Status",
+        value: "Patent Pending",
+      },
+      {
+        trait_type: "Rarity",
+        value: "Rare",
+      },
+    ],
+    molecular_data: {
+      molecular_weight: analysis.mw,
+      logp: analysis.logp,
+      hbd: analysis.num_h_donors,
+      hba: analysis.num_h_acceptors,
+      tpsa: analysis.tpsa,
+      sa_score: analysis.sa_score,
+      qed: analysis.qed,
+      tox_score: analysis.tox_score,
+      tox_pred: analysis.tox_pred,
+      lipinski_passes: analysis.lipinski_passes,
+      smiles: smiles,
     },
-    {
-      "trait_type": "Target Disease",
-      "value": "Alzheimer's Disease"
+    ml_analysis: {
+      model: "Custom chem v2.1",
+      tox_pred: analysis.tox_pred,
     },
-    {
-      "trait_type": "ML Confidence Score",
-      "value": 87,
-      "max_value": 100,
-      "display_type": "boost_percentage"
+    financial: {
+      estimated_dev_cost: "$300M - $700M",
+      peak_sales_estimate: "$850M - $1.5B",
+      success_probability: 0.19,
     },
-    {
-      "trait_type": "Binding Affinity (pIC50)",
-      "value": 8.2,
-      "max_value": 12,
-      "display_type": "number"
+    tokenomics: {
+      total_supply: 1000000,
+      revenue_share_pct: 25,
+      governance_rights: true,
     },
-    {
-      "trait_type": "Drug-likeness Score",
-      "value": 78,
-      "max_value": 100,
-      "display_type": "boost_percentage"
+    provenance: {
+      discovery_date: analysis.timestamp,
+      blockchain: "Avalanche C-Chain",
+      token_standard: "ERC-1155",
     },
-    {
-      "trait_type": "Toxicity Risk",
-      "value": "Low"
-    },
-    {
-      "trait_type": "Development Stage",
-      "value": "Hit-to-Lead"
-    },
-    {
-      "trait_type": "Market Potential",
-      "value": "High"
-    },
-    {
-      "trait_type": "Patent Status",
-      "value": "Patent Pending"
-    },
-    {
-      "trait_type": "Rarity",
-      "value": "Rare"
-    }
-  ],
-  "molecular_data": {
-    "molecular_weight": analysis.mw,
-    "logp": analysis.logp,
-    "hbd": analysis.num_h_donors,
-    "hba": analysis.num_h_acceptors,
-    "tpsa": analysis.tpsa,
-    "sa_score": analysis.sa_score,
-    "qed": analysis.qed,
-    "tox_score": analysis.tox_score,
-    "tox_pred": analysis.tox_pred,
-    "lipinski_passes": analysis.lipinski_passes,
-    "smiles": smiles
-  },
-  "ml_analysis": {
-    "model": "Custom chem v2.1",
-    "tox_pred": analysis.tox_pred,
-  },
-  "financial": {
-    "estimated_dev_cost": "$300M - $700M",
-    "peak_sales_estimate": "$850M - $1.5B",
-    "success_probability": 0.19
-  },
-  "tokenomics": {
-    "total_supply": 1000000,
-    "revenue_share_pct": 25,
-    "governance_rights": true
-  },
-  "provenance": {
-    "discovery_date":analysis.timestamp,
-    "blockchain": "Avalanche C-Chain",
-    "token_standard": "ERC-1155",
-  }
-}
+  };
 }
 
 // Blockchain integration function
@@ -220,7 +243,7 @@ export async function tokenizeMolecule(smiles, metadata) {
     );
 
     const metadataUrl = `https://${process.env.AWS_BUCKET_NAME}.s3.us-east-1.amazonaws.com/${key}`;
-    console.log(metadataUrl)
+    console.log(metadataUrl);
     // Queue for blockchain minting
     const provider = new ethers.providers.JsonRpcProvider(
       process.env.AVALANCHE_RPC_URL!
@@ -239,7 +262,7 @@ export async function tokenizeMolecule(smiles, metadata) {
 
     const tx = await upkeep.queueMolecule(smiles, metadataUrl);
     console.log(`Molecule queued for tokenization: ${tx.hash}`);
-    return tx.hash
+    return tx.hash;
   } catch (error) {
     console.error("Tokenization failed:", error);
     return null;

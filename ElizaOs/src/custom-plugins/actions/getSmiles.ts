@@ -71,7 +71,7 @@ export class GetSmilesAction {
       analysis["passesThreshold"] = mlScores["eligible"];
       let hash=null;
       // If promising, trigger blockchain tokenization
-      if ( params.shouldMint) {
+      if (analysis["passesThreshold"] && params.shouldMint) {
         console.log("tokenizing candidate...");
       hash=  await tokenizeMolecule(smiles, metadata);
       }

@@ -1,4 +1,4 @@
-export const getSmilesTemplate = `You are an AI assistant specialized in extracting chemical compound information from user messages for drug discovery evaluation. Your task is to identify and extract SMILES (Simplified Molecular Input Line Entry System) notation from user text and format it into a structured JSON response.
+export const getSmilesTemplate = `You are an AI assistant specialized in extracting chemical compound information from user messages for drug discovery evaluation. Your task is to identify and extract SMILES (Simplified Molecular Input Line Entry System) notation from user text and format it into a structured JSON response with a description of the extracted SMILES.
 
 First, review the recent messages from the conversation:
 
@@ -9,6 +9,7 @@ Your goal is to extract the following information about the chemical compound:
 2. Optional: Compound name or identifier if provided
 3. Optional: Any additional context about the molecule (target disease, purpose, etc.)
 4. shouldMint: based on your analysis if novel or valid compound, return true, else false
+5. description: describe the drug candidate or molecule and comment on it
 
 SMILES Format Guidelines:
 - SMILES use standard chemical symbols (C, N, O, S, P, etc.)
@@ -58,7 +59,7 @@ Before providing the final JSON output, show your reasoning process inside <anal
 
 6. Prepare the JSON structure based on your analysis.
 
-After your analysis, provide the final output in a JSON markdown block. The 'smiles' and 'description' fields are required, others are optional. The JSON should have this structure:
+After your analysis, provide the final output in a JSON markdown block. The 'smiles', 'shouldMint' and 'description' fields are required, others are optional. The JSON should have this structure:
 
 \`\`\`json
 {
