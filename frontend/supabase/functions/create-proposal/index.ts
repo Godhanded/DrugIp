@@ -18,25 +18,25 @@ app.options('*', (req, res) => {
   res.sendStatus(200)
 })
 
-app.post('/', async (req, res) => {
+app.post('/', async (req, res): Promise<void> => {
   try {
     const body: Partial<CreateProposalRequest> = req.body
 
     const { molecule_id, title, description, chain = 'Multichain' } = body
 
     if (!molecule_id || !title || !description) {
-      return res.status(400).set(corsHeaders).json({ error: 'Missing required fields: molecule_id, title, description' })
+      res.status(400).set(corsHeaders).json({ error: 'Missing required fields: molecule_id, title, description' })
     }
 
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
     const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-    if (!supabaseUrl || !supabaseServiceKey) {
-      return res.status(500).set(corsHeaders).json({ error: 'Server misconfiguration: missing Supabase credentials' })
+    if (!supabaseUrl || !supabaseAnonKey) {
+     res.status(500).set(corsHeaders).json({ error: 'Server misconfiguration: missing Supabase credentials' })
     }
 
     const { createClient } = await import('@supabase/supabase-js')
-    const supabase = createClient(supabaseUrl, supabaseServiceKey)
+    const supabase = createClient(supabaseUrl!, supabaseAnonKey!)
 
     const { data, error } = await supabase
       .from('proposals')
@@ -53,13 +53,13 @@ app.post('/', async (req, res) => {
 
     if (error) {
       console.error('Supabase insert error:', error)
-      return res.status(500).set(corsHeaders).json({ error: 'Failed to create proposal' })
+      res.status(500).set(corsHeaders).json({ error: 'Failed to create proposal' })
     }
 
-    return res.status(201).set(corsHeaders).json({ data, message: 'Proposal created successfully' })
+    res.status(201).set(corsHeaders).json({ data, message: 'Proposal created successfully' })
   } catch (error) {
     console.error('Unexpected error:', error)
-    return res.status(500).set(corsHeaders).json({ error: 'Internal server error' })
+    res.status(500).set(corsHeaders).json({ error: 'Internal server error' })
   }
 })
 
