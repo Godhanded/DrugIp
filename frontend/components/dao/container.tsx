@@ -6,8 +6,8 @@ import { Search } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import ProposalCard from '@/components/dao/proposalCard'
 import CreateProposalDialog from '@/components/dao/createProposalDialog'
-import { Proposal } from '@/lib/supabase'
-import { getProposals } from '@/lib/proposals'
+import { Proposal } from '@/utils/supabase'
+import { getProposals } from '@/utils/proposals'
 
 export default function Container() {
   const [proposals, setProposals] = useState<Proposal[]>([])

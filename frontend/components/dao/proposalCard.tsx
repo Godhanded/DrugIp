@@ -1,6 +1,6 @@
 import { Badge } from '@/components/ui/badge'
 import { Clock, Users } from 'lucide-react'
-import { Proposal } from '@/lib/supabase'
+import { Proposal } from '@/utils/supabase'
 
 interface ProposalCardProps {
   proposal: Proposal
