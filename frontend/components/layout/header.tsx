@@ -21,11 +21,13 @@ import {
 import { WalletSelector } from "@/components/ui/walletSelector"
 
 export default function Header() {
+
   const { address, isConnected } = useAccount()
   const { disconnect } = useDisconnect()
   const chainId = useChainId()
   const { switchChain } = useSwitchChain()
   const [showWalletSelector, setShowWalletSelector] = useState(false)
+
 
   const navLinks = [
     {
@@ -42,8 +44,8 @@ export default function Header() {
     },
     {
       title: "dao",
-      link: "#dao",
-    },
+      link: "/dao"
+    }
   ]
 
   const handleConnectClick = () => {
@@ -78,27 +80,32 @@ export default function Header() {
   const isCorrectChain = chainId === avalancheFuji.id || chainId === sepolia.id
 
   return (
-    <>
-      <header className="w-11/12 mx-auto py-4 md:grid md:grid-cols-3 flex md:justify-normal justify-between items-center bg-transparent">
-        <div className="flex justify-start">
-          <Link href="/">
-            <Image src="/logo/logo.png" alt="DeMol" width={600} height={600} quality={100} className="w-10 h-10" />
+    <header className="w-11/12 mx-auto py-4 md:grid md:grid-cols-3 flex md:justify-normal justify-between items-center bg-transparent">
+      <div className="flex justify-start">
+        <Image
+          src="/logo/logo.png"
+          alt="DeMol"
+          width={600}
+          height={600}
+          quality={100}
+          className="w-10 h-10"
+        />
+      </div>
+
+
+      <nav className="hidden md:flex justify-center gap-8">
+        {navLinks.map((nav, index) => (
+          <Link key={index} href={nav.link}>
+            <span
+              className={`uppercase hover:text-primary transition-colors duration-300 font-montserrat md:text-[14px] font-thin`}
+            >
+              {nav.title}
+            </span>
           </Link>
-        </div>
+        ))}
+      </nav>
 
-        <nav className="hidden md:flex justify-center gap-8">
-          {navLinks.map((nav, index) => (
-            <Link key={index} href={nav.link}>
-              <span
-                className={`uppercase hover:text-primary transition-colors duration-300 font-montserrat md:text-[14px] font-thin`}
-              >
-                {nav.title}
-              </span>
-            </Link>
-          ))}
-        </nav>
-
-        <div className="hidden md:flex justify-end">
+      <div className="hidden md:flex justify-end">
           {!isConnected ? (
             <Button
               onClick={handleConnectClick}
@@ -168,14 +175,13 @@ export default function Header() {
               </DropdownMenuContent>
             </DropdownMenu>
           )}
-        </div>
+      </div>
 
-        <div className="md:hidden">
-          <MobileNav />
-        </div>
-      </header>
-
+      <div className="md:hidden">
+        <MobileNav />
+      </div>
+  
       <WalletSelector isOpen={showWalletSelector} onClose={() => setShowWalletSelector(false)} />
-    </>
+    </header>
   )
 }
