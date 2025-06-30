@@ -33,18 +33,22 @@ export default function Header() {
     {
       title: "try it out",
       link: "/action",
+      out:false
     },
     {
-      title: "about",
-      link: "#about",
+      out:true,
+      title: "Demo Video",
+      link: "https://www.youtube.com/watch?v=vr6uVH4u8zQ",
     },
     {
+      out: true,
       title: "github",
-      link: "#github",
+      link: "https://github.com/Godhanded/DrugIp/tree/main",
     },
     {
       title: "dao",
-      link: "/dao"
+      link: "/dao",
+      out: false
     }
   ]
 
@@ -82,7 +86,7 @@ export default function Header() {
   return (
     <header className="w-11/12 mx-auto py-4 md:grid md:grid-cols-3 flex md:justify-normal justify-between items-center bg-transparent">
       <div className="flex justify-start">
-        <Link href="/">
+        <Link href="/" >
            <Image
              src="/logo/logo.png"
              alt="DeMol"
@@ -96,7 +100,8 @@ export default function Header() {
 
       <nav className="hidden md:flex justify-center gap-8">
         {navLinks.map((nav, index) => (
-          <Link key={index} href={nav.link}>
+          <Link key={index} href={nav.link} target={nav.out ==true?"_blank":undefined}
+  rel={nav.out ? "noopener noreferrer" : undefined} >
             <span
               className={`uppercase transition-colors duration-300 font-montserrat md:text-[14px] font-thin`}
             >

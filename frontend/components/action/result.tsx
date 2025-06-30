@@ -50,7 +50,7 @@ export default function Result({res}: ResultProps) {
 
                 <CardFooter className="flex gap-2 pl-14">
                     <Badge className="rounded-lg text-[14px] p-1 px-4 bg-[#007341]/50 text-[#07FFB0]">Eligible</Badge>
-                    <Badge className="rounded-lg text-[14px] p-1 px-4">Transaction {res[1]?.content.analysis.eligible? "Completed after further analysis": "Failed as drug candidate did not meet minimum viability score after further analysis"}</Badge>
+                    <Badge className="rounded-lg text-[14px] p-1 px-4">Transaction {res[1]?.content.analysis.eligible? "Completed: IP minted to holding wallet": "Failed as drug candidate did not meet minimum viability score after further analysis"}</Badge>
                 </CardFooter>
             </Card>
             <div className="w-8/12 mx-auto pt-2">
