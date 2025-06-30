@@ -85,7 +85,7 @@ export default function Header() {
 
   return (
     <header className="w-11/12 mx-auto py-4 md:grid md:grid-cols-3 flex md:justify-normal justify-between items-center bg-transparent">
-      <div className="flex justify-start gap-6">
+      <div className="flex justify-start items-center gap-6">
         <Link href="/" >
            <Image
              src="/logo/logo.png"
