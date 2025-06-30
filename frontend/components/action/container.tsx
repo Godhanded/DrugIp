@@ -12,7 +12,7 @@ export default function Container() {
 
   return (
     <div className="h-screen">
-      <ActionNav />
+      {/* <ActionNav /> */}
 
       <div className="flex justify-center items-center w-full h-screen">
         <div className="w-full">
@@ -23,9 +23,9 @@ export default function Container() {
         </div>
       </div>
 
-      <p className="text-center text-white/61 font-inter">
+      {/* <p className="text-center text-white/61 font-inter">
         Copyright &copy; 2025 DeMol. All Rights Reserved.
-      </p>
+      </p> */}
     </div>
   );
 }

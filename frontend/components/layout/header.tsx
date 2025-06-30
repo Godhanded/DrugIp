@@ -19,7 +19,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropDown"
 import { WalletSelector } from "@/components/ui/walletSelector"
-import Link from "next/link"
 
 export default function Header() {
   const { address, isConnected } = useAccount()

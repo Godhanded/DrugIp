@@ -19,7 +19,7 @@ export default function Action({ onNext }: { onNext: () => void }) {
             <Search className="text-[#FFD147]" />
             <p>
               <span className="font-[400] inter text-white text-[18px] font-inter">
-                Analyze<br />Molecule
+                Analyze<br/>Molecule
               </span>
             </p>
           </Card>
