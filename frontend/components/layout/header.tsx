@@ -85,7 +85,7 @@ export default function Header() {
 
   return (
     <header className="w-11/12 mx-auto py-4 md:grid md:grid-cols-3 flex md:justify-normal justify-between items-center bg-transparent">
-      <div className="flex justify-start">
+      <div className="flex justify-start gap-6">
         <Link href="/" >
            <Image
              src="/logo/logo.png"
@@ -95,6 +95,15 @@ export default function Header() {
              quality={100}
              className="w-10 h-10"
            />
+        </Link>
+        <Link href="https://bolt.new/">
+          <Image
+            src="logo/boltnew.png"
+            alt="bolt.new"
+            width={600}
+            height={600}
+            className="w-10 h-10"
+          />
         </Link>
       </div>
 
