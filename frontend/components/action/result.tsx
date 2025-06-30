@@ -31,7 +31,7 @@ export default function Result() {
 
                 <CardContent className="pl-14">
                     <p className="text-white/50 text-[12px]">
-                        I have analyzed the provided SMILES string CC(C)CC1=CC=C(C=C1)C(C)C(=O)O in detail. The molecule has a molecular weight of 206.28 g/mol, a logP value of 3.85, 1 hydrogen bond donor, and 2 hydrogen bond acceptors. These properties fall within the acceptable ranges defined by Lipinski's Rule of Five, suggesting good drug-likeness. Additionally, no major structural alerts were identified. Based on this assessment, the molecule appears to be a promising drug candidate worthy of further exploration. I will now proceed with tokenizing this IP by minting an NFT on the blockchain.
+                        {"I have analyzed the provided SMILES string CC(C)CC1=CC=C(C=C1)C(C)C(=O)O in detail. The molecule has a molecular weight of 206.28 g/mol, a logP value of 3.85, 1 hydrogen bond donor, and 2 hydrogen bond acceptors. These properties fall within the acceptable ranges defined by Lipinski's Rule of Five, suggesting good drug-likeness. Additionally, no major structural alerts were identified. Based on this assessment, the molecule appears to be a promising drug candidate worthy of further exploration. I will now proceed with tokenizing this IP by minting an NFT on the blockchain."}
                     </p>
                 </CardContent>
 

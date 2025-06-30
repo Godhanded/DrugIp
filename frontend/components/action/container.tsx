@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import ActionNav from "./action_nav";
 import Action from "@/components/action/action";
 import Form from "@/components/action/form";
 import Result from "@/components/action/result";
@@ -9,6 +8,7 @@ import Loading from "@/components/utils/loading";
 
 export default function Container() {
   const [step, setStep] = useState(1); // Track the current step
+ 
 
   return (
     <div className="h-screen">

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { useConnect } from "wagmi"
+import { Connector, useConnect } from "wagmi"
 import { Button } from "@/components/ui/button"
 import { IoWalletSharp, IoCloseSharp } from "react-icons/io5"
 import { FaWallet } from "react-icons/fa"
@@ -18,7 +18,7 @@ export function WalletSelector({ isOpen, onClose }: WalletSelectorProps) {
   const { connect, connectors, isPending } = useConnect()
   const [connectingId, setConnectingId] = useState<string | null>(null)
 
-  const handleConnect = async (connector: any) => {
+  const handleConnect = async (connector: Connector) => {
     try {
       setConnectingId(connector.id)
       await connect({ connector })
