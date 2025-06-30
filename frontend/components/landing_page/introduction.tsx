@@ -2,10 +2,11 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import {  ChevronRight } from "lucide-react"
 import { Card, CardHeader, CardDescription }  from "@/components/ui/card"
+import Link from "next/link"
 
 export default function Introduction() {
     return(
-        <section className="md:w-10/12  w-11/12 mx-auto">
+        <section className="md:w-10/12  w-11/12 mx-auto text-white">
             <h1 className="text-center font-inter md:text-[24px] text-[18px] font-light pt-16">Welcome to the Future of Drug Discovery<br/>& DeFi</h1>
 
             <div className="md:flex items-center relative md:pt-0 pt-12">
@@ -14,7 +15,7 @@ export default function Introduction() {
                         <CardHeader className="flex gap-3 items-center">
                             <div className="bg-[#FF12C4] w-[4px] h-[50px] rounded-full"></div>
                             <div>
-                                <h1 className="font-[400] text-3xl">DeMol Team</h1>
+                                <h1 className="font-[400] text-3xl text-white">DeMol Team</h1>
                             </div>
                         </CardHeader>
                         <CardDescription>
@@ -57,10 +58,12 @@ export default function Introduction() {
             </div>
 
             <div>
-                <Button className="bg-transparent border-[1px] border-white flex gap-1 text-white rounded-none  mx-auto p-5 mt-10">
-                    <span className="uppercase  font-barlow font-[400]">get started</span>
-                    <ChevronRight />
-                </Button>
+                <Link href="/action">
+                    <Button className="bg-transparent border-[1px] border-white flex gap-1 text-white rounded-none  mx-auto p-5 mt-10">
+                        <span className="uppercase  font-barlow font-[400]">get started</span>
+                        <ChevronRight />
+                    </Button>
+                </Link>
             </div>
 
         </section>

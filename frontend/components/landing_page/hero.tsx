@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
 import Header from "../layout/header";
+import Link from "next/link"
 
 export default function Hero() {
   return (
@@ -18,10 +19,12 @@ export default function Hero() {
             DeMol
           </h1>
           <div className="grid md:flex gap-3 w-6/12 md:mx-0 mx-auto">
-            <Button className="bg-transparent border-[1px] border-white flex gap-1 text-white rounded-none">
-              <span className="uppercase font-barlow font-semibold">get started</span>
-              <ChevronRight />
-            </Button>
+            <Link href="/action">
+              <Button className="bg-transparent border-[1px] border-white flex gap-1 text-white rounded-none">
+                <span className="uppercase font-barlow font-semibold">get started</span>
+                <ChevronRight />
+              </Button>
+            </Link>
 
             <Button className="bg-transparent border-[1px] border-white flex gap-1 text-white rounded-none">
               <span className="uppercase font-barlow font-semibold">twitter</span>
