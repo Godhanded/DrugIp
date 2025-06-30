@@ -112,7 +112,6 @@ export default function MobileNav() {
         {open && (
         <motion.div
         className="absolute left-1/2 -translate-x-1/2 z-[9999] mt-[1rem] w-full h-screen bg-[#0A1022] py-10 text-center font-[500]"
-        variants={menuVariants}
         initial="initial"
         animate="animate"
         exit="exit"
