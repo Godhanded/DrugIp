@@ -1,7 +1,12 @@
 import { Card } from "@/components/ui/card"
 import { Search, TestTubeDiagonal } from "lucide-react"
+import { MoleculeGenerationModal } from "@/components/ui/moleculeGenerationModal"
+import { useState } from "react";
 
 export default function Action({ onNext }: { onNext: () => void }) {
+
+   const [showGenerationModal, setShowGenerationModal] = useState(false)
+
   return (
     <section>
       <div>
@@ -23,7 +28,7 @@ export default function Action({ onNext }: { onNext: () => void }) {
               </span>
             </p>
           </Card>
-          <Card className="w-5/12 shadow-sm cursor-pointer">
+          <Card className="w-5/12 shadow-sm cursor-pointer" onClick={() => setShowGenerationModal(true)}>
             <TestTubeDiagonal className="text-[#BD9AF8]" />
             <p>
               <span className="font-[400] inter text-white text-[18px] font-inter">
@@ -33,6 +38,7 @@ export default function Action({ onNext }: { onNext: () => void }) {
           </Card>
         </div>
       </div>
+       <MoleculeGenerationModal onNext={onNext} isOpen={showGenerationModal} onClose={() => setShowGenerationModal(false)} />
     </section>
   );
 }

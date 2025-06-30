@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Copy } from "lucide-react";
 import {llmRes, modelRes} from "@/components/action/form";
-import { useState } from "react";
+
 interface ResultProps {
   res: [llmRes, modelRes] 
 }
