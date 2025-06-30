@@ -19,6 +19,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropDown"
 import { WalletSelector } from "@/components/ui/walletSelector"
+import Link from "next/link"
 
 export default function Header() {
   const { address, isConnected } = useAccount()
@@ -81,7 +82,9 @@ export default function Header() {
     <>
       <header className="w-11/12 mx-auto py-4 md:grid md:grid-cols-3 flex md:justify-normal justify-between items-center bg-transparent">
         <div className="flex justify-start">
-          <Image src="/logo/logo.png" alt="DeMol" width={600} height={600} quality={100} className="w-10 h-10" />
+          <Link href="/">
+            <Image src="/logo/logo.png" alt="DeMol" width={600} height={600} quality={100} className="w-10 h-10" />
+          </Link>
         </div>
 
         <nav className="hidden md:flex justify-center gap-8">
