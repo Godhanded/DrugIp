@@ -23,6 +23,16 @@ export default function Partners() {
             image: "/logo/aws.png",
             link:"https://github.com/Godhanded/DrugIp/blob/de80c51e0fa104df45a057fc0a807834c07604b5/ElizaOs/src/custom-plugins/actions/analyzeMolecule.ts#L236"
         },
+        {
+            name: "supabase",
+            image: "/logo/supabase.png",
+            link: ""
+        },
+        {
+            name: "netlify",
+            image: "/logo/netlify.png",
+            link: ""
+        }
     ]
     return(
         <section className="bg-[#FFFFFF0D] md:py-8 py-14 w-full">
