@@ -38,7 +38,7 @@ export default function Header() {
     {
       out:true,
       title: "Demo Video",
-      link: "https://www.youtube.com/watch?v=vr6uVH4u8zQ",
+      link: "https://youtu.be/tIp2q2h7xPU",
     },
     {
       out: true,
