@@ -1,9 +1,14 @@
 from flask import Flask, jsonify,request
 from drug_eligibility import check_eligibility
 from test import gen_smile
+from flask_cors import CORS
 
 
 app= Flask(__name__)
+CORS(app, resources={r"/*": {
+    "origins": "*",
+    "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"]
+}})
 
 @app.route(rule="/predict/<string:smile>")
 def predict_smile(smile):
